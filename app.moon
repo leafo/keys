@@ -5,7 +5,7 @@ import assert_valid from require "lapis.validate"
 
 
 class extends lapis.Application
-  "/keys/put": respond_to {
+  "/keys/put": capture_errors_json respond_to {
     before: =>
       assert_valid @params, {
         {"machine_id", is_integer: true}
