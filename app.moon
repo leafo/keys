@@ -14,8 +14,13 @@ class extends lapis.Application
 
     GET: =>
       import Keys from require "models"
-      -- get max id
-      json: {}
+      res = Keys\select "
+        where machine_id = ?
+      ", @params.machine_id, fields: "max(id)"
+
+      json: {
+        max_id: res.max or -1
+      }
 
     POST: =>
       import Keys from require "models"

@@ -15,3 +15,16 @@ describe "app", ->
     }, res
 
 
+  it "gets max id when there are no keys", ->
+    status, res = request "/keys/put", {
+      expect: "json"
+      get: {
+        machine_id: 1
+        password: "test"
+      }
+    }
+
+    assert.same {
+      max_id: -1
+    }, res
+
