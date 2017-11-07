@@ -28,3 +28,19 @@ describe "app", ->
       max_id: -1
     }, res
 
+  it "puts keys", ->
+    status, res = request "/keys/put", {
+      expect: "json"
+      get: {
+        machine_id: 1
+        password: "test"
+      }
+      headers: {
+        "Content-type": "application/json"
+      }
+      post: "[1,2,3]"
+    }
+
+    error {
+      :status, :res
+    }
