@@ -2,8 +2,13 @@ import use_test_server from require "lapis.spec"
 import request from require "lapis.spec.server"
 import truncate_tables from require "lapis.spec.db"
 
+import Keys from require "models"
+
 describe "app", ->
   use_test_server!
+
+  before_each ->
+    truncate_tables Keys
 
   it "requests /keys/put with missing params", ->
     status, res = request "/keys/put", expect: "json"
@@ -38,9 +43,11 @@ describe "app", ->
       headers: {
         "Content-type": "application/json"
       }
-      post: "[1,2,3]"
+      post: '[[1,"2017-12-1 00:00:00",1],[2,"2017-12-2 00:00:00",2]]'
     }
 
-    error {
-      :status, :res
-    }
+    assert.same {
+      success: true
+      inserted: 2
+    }, res
+

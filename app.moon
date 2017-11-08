@@ -32,11 +32,17 @@ class extends lapis.Application
       ngx.req.read_body!
       data = from_json assert ngx.req.get_body_data!
 
+      inserted = 0
+
       for {id, time, count} in *data
         Keys\create {
           :id, :time, :count
           machine_id: @machine_id
         }
+        inserted += 1
 
-      json: {}
+      json: {
+        success: true
+        :inserted
+      }
   }
