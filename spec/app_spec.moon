@@ -4,6 +4,9 @@ import truncate_tables from require "lapis.spec.db"
 
 import Keys from require "models"
 
+
+import types from require "tableshape"
+
 describe "app", ->
   use_test_server!
 
@@ -50,4 +53,23 @@ describe "app", ->
       success: true
       inserted: 2
     }, res
+
+
+    inserted = Keys\select "order by id asc"
+    assert (types.shape {
+      types.shape {
+        id: 1
+        machine_id: 1
+        count: 1
+        time: "2017-12-01 00:00:00"
+      }
+
+      types.shape {
+        id: 2
+        machine_id: 1
+        count: 2
+        time: "2017-12-02 00:00:00"
+      }
+
+    }) inserted
 
