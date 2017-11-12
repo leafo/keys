@@ -4,6 +4,20 @@ import respond_to, capture_errors_json, assert_error from require "lapis.applica
 import assert_valid from require "lapis.validate"
 
 class extends lapis.Application
+  "/keys": capture_errors_json respond_to {
+    GET: =>
+      import Keys from require "models"
+      out = Keys\select "
+        where time > now() - '2 days'::interval
+        group by 1, machine_id
+        order by t desc
+      ", fields: "date_trunc('hour', time) as t, sum(count), machine_id"
+
+      json: {
+        keys: out
+      }
+  }
+
   "/keys/put": capture_errors_json respond_to {
     before: =>
       assert_valid @params, {

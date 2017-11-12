@@ -13,6 +13,12 @@ describe "app", ->
   before_each ->
     truncate_tables Keys
 
+  it "gets keys", ->
+    status, res = request "/keys", expect: "json"
+    assert.same {
+      keys: {}
+    }, res
+
   it "requests /keys/put with missing params", ->
     status, res = request "/keys/put", expect: "json"
     assert.same {
